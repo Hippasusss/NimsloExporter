@@ -4,18 +4,23 @@ import sys
 
 def ExportTimeline(timeline, project, path):
     project.SetCurrentTimeline(timeline)
-    project.LoadRenderPreset(RenderPresetName)
+    #project.LoadRenderPreset(RenderPresetName)
     exportItemList = timeline.GetItemListInTrack("video", ExportTrackNumber)
+    timelineName = timeline.GetName()
 
     i = 1
+    print("")
+    print(f"Creating Renders for {timelineName}")
+    print(f"{len(exportItemList)} exports in timeline")
     for item in exportItemList:
         exportTimings = {
             "MarkIn" : item.GetStart(),
             "MarkOut" : item.GetEnd(),
-            "CustomName" : f"{timeline.GetName()} {i}",
+            "CustomName" : f"{timelineName} {i}",
             "TargetDir" : path
         }
         i = i + 1
+        print(f"Adding render for: {timelineName} {i}")
         project.SetRenderSettings(exportTimings)
         project.AddRenderJob()
 
@@ -46,17 +51,15 @@ def GetResolve():
     return bmd.scriptapp("Resolve")
 
 resolve = GetResolve()
-fusion = resolve.Fusion()
-path = fusion.RequestDir()
-projectManager = resolve.GetProjectManager()
-project = projectManager.GetCurrentProject()
+path = resolve.Fusion().RequestDir()
+project = resolve.GetProjectManager().GetCurrentProject()
 TimelineCount = project.GetTimelineCount()
 TimelineList = []
 ExportTrackNumber = 2
 RenderPresetName = "H.264 Master"
 
 
-for i in range(1, TimelineCount):
+for i in range(1, TimelineCount + 1):
     timeline = project.GetTimelineByIndex(i)
     TimelineList.append(timeline)
     print(f"found timeline: {timeline.GetName()}")
