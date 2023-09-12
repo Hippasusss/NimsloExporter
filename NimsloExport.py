@@ -31,10 +31,13 @@ resolve = GetResolve()
 projectManager = resolve.GetProjectManager()
 project = projectManager.GetCurrentProject()
 TimelineCount = project.GetTimelineCount()
-TimelineList = None
+TimelineList = [] 
 
-for i in range(0, TimelineCount):
-    TimelineList.append(project.GetTimeline(i))
+for i in range(1, TimelineCount):
+    timeline = project.GetTimelineByIndex(i)
+    TimelineList.append(timeline)
+    print(f"found timeline: {timeline}")
+
 
 for timeline in TimelineList:
 
