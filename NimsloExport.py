@@ -1,6 +1,4 @@
-
 import sys
-
 
 def ExportTimeline(timeline, project, path):
     project.SetCurrentTimeline(timeline)
@@ -54,19 +52,14 @@ resolve = GetResolve()
 path = resolve.Fusion().RequestDir()
 project = resolve.GetProjectManager().GetCurrentProject()
 TimelineCount = project.GetTimelineCount()
-TimelineList = []
 ExportTrackNumber = 2
 RenderPresetName = "H.264 Master"
 
 
+project.DeleteAllRenderJobs()
 for i in range(1, TimelineCount + 1):
     timeline = project.GetTimelineByIndex(i)
-    TimelineList.append(timeline)
     print(f"found timeline: {timeline.GetName()}")
-
-
-project.DeleteAllRenderJobs()
-for timeline in TimelineList:
     ExportTimeline(timeline, project, path)
 
 
