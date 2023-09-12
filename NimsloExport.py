@@ -31,5 +31,12 @@ resolve = GetResolve()
 projectManager = resolve.GetProjectManager()
 project = projectManager.GetCurrentProject()
 TimelineCount = project.GetTimelineCount()
+TimelineList = None
+
+for i in range(0, TimelineCount):
+    TimelineList.append(project.GetTimeline(i))
+
+for timeline in TimelineList:
+
 
 print(TimelineCount)
