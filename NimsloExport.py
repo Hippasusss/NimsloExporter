@@ -13,7 +13,7 @@ def ExportTimeline(timeline, project, path):
     for item in exportItemList:
         exportTimings = {
             "MarkIn" : item.GetStart(),
-            "MarkOut" : item.GetEnd(),
+            "MarkOut" : item.GetEnd() - 1,
             "CustomName" : f"{timelineName} {i}",
             "TargetDir" : path
         }
@@ -54,13 +54,15 @@ project = resolve.GetProjectManager().GetCurrentProject()
 TimelineCount = project.GetTimelineCount()
 ExportTrackNumber = 2
 RenderPresetName = "H.264 Master"
+NameExcludes = ["Timeline 1"]
 
 
 project.DeleteAllRenderJobs()
 for i in range(1, TimelineCount + 1):
     timeline = project.GetTimelineByIndex(i)
     print(f"found timeline: {timeline.GetName()}")
-    ExportTimeline(timeline, project, path)
+    if(timeline.GetName() not in NameExcludes):
+        ExportTimeline(timeline, project, path)
 
 
 
